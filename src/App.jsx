@@ -5,6 +5,7 @@ import Answer from './components/Answer';
 function App() {
   const [question, setQuestion] = useState("");
   const [result, setResult] = useState([]);
+  const [recenthistory, setRecentHistory] = useState(JSON.parse(localStorage.getItem('history')));
 
   const payload = {
     "contents": [
@@ -19,6 +20,19 @@ function App() {
   }
 
   const askQuestion = async () => {
+
+    if(localStorage.getItem('history')){
+      let history = JSON.parse(localStorage.getItem('history'));
+      history = [question,...history];
+      localStorage.setItem('history',JSON.stringify(history));
+      setRecentHistory(history);
+    }
+    else{
+      localStorage.setItem('history',JSON.stringify([question]));
+      setRecentHistory([question]);
+    }
+    console.log(recenthistory)
+   
     let response = await fetch(URL, {
       method: "POST",
       body: JSON.stringify(payload)
@@ -27,19 +41,20 @@ function App() {
     let dataString = response.candidates[0].content.parts[0].text;
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
-    //console.log(dataString);
-    //setResult([question,dataString]);
-    setResult([...result, { type: 'q', text: question }, { type: 'a', text: dataString }]);
 
-    //setResult(response?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from model");
-    // console.log(
-    //   response?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from model"
-    // );
-    //console.log(result);
+    setResult([...result, { type: 'q', text: question }, { type: 'a', text: dataString }]);
+    
   }
   return (
     <div className='grid grid-cols-5 '>
       <div className='col-span-1 bg-zinc-800 h-screen'>
+        <ul>
+          {
+            recenthistory && recenthistory.map((item) => (
+              <li key={item} className='p-3 border-b border-zinc-700 text-white'>{item}</li>
+            ))
+          }
+        </ul>
       </div>
       <div className='col-span-4 p-10 '>
         <div className='container h-110 overflow-scroll'>
@@ -51,8 +66,8 @@ function App() {
                     {
                       item.type === 'q' ? (
                         <li key={index + Math.random()} className='text-right p-1 border-5 bg-zinc-700 border-zinc-700 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl w-fit text-white'>
-                          <Answer ans={item.text} totalResult={1} index={index} /></li>)
-                        : item.text.map((ansItem, ansIndex) => (<li key={index + Math.random()} className='text-left p-2'><Answer ans={ansItem} totalResult={item.length} index={ansIndex} /></li>
+                          <Answer ans={item.text} totalResult={1} index={index} type={item.type} /></li>)
+                        : item.text.map((ansItem, ansIndex) => (<li key={index + Math.random()} className='text-left p-2'><Answer ans={ansItem} totalResult={item.length} index={ansIndex} type={item.type} /></li>
                         ))                  
                   }
                   </div>
