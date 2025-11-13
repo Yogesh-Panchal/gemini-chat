@@ -29,7 +29,7 @@ function App() {
     dataString = dataString.map((item) => item.trim());
     //console.log(dataString);
     //setResult([question,dataString]);
-    setResult([...result,{type:'q',text:question},{type:'a',text:dataString}]);
+    setResult([...result, { type: 'q', text: question }, { type: 'a', text: dataString }]);
 
     //setResult(response?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from model");
     // console.log(
@@ -40,29 +40,25 @@ function App() {
   return (
     <div className='grid grid-cols-5 '>
       <div className='col-span-1 bg-zinc-800 h-screen'>
-
       </div>
       <div className='col-span-4 p-10 '>
-        <div className='container h-110 overflow-scroll'> 
-          <div className=' text-zinc-300'>
-            <ul>  
-              {              
-              result.map((item, index) => (
-                item.type === 'q' ? ( 
-                  <li  key={index+Math.random()} className='text-left p-2'><Answer ans={item.text} totalResult={1} index={index} /></li> )
-                  : item.text.map((ansItem,ansIndex) => ( <li  key={index+Math.random()} className='text-left p-2'><Answer ans={ansItem} totalResult={item.length} index={ansIndex} /></li>
-                  ))
-                ))
-              
-              }
-            </ul>  
-            {/* <ul>              
+        <div className='container h-110 overflow-scroll'>
+          <div className=' text-zinc-300 '>
+            <ul>
               {
-                result && result.map((item, index) => (
-                  <li  key={index+Math.random()} className='text-left p-2'><Answer ans={item} totalResult={result.length} index={index} /></li>
+                result.map((item, index) => (
+                  <div key={index + Math.random()} className={item.type === 'q' ? 'flex justify-end' : 'justify-start'}>
+                    {
+                      item.type === 'q' ? (
+                        <li key={index + Math.random()} className='text-right p-1 border-5 bg-zinc-700 border-zinc-700 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl w-fit text-white'>
+                          <Answer ans={item.text} totalResult={1} index={index} /></li>)
+                        : item.text.map((ansItem, ansIndex) => (<li key={index + Math.random()} className='text-left p-2'><Answer ans={ansItem} totalResult={item.length} index={ansIndex} /></li>
+                        ))                  
+                  }
+                  </div>
                 ))
               }
-            </ul> */}
+            </ul>            
           </div>
         </div>
         <div className='bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl 
