@@ -45,19 +45,29 @@ function App() {
     setResult([...result, { type: 'q', text: question }, { type: 'a', text: dataString }]);
     
   }
+
+  const clearHistory = () => {
+    localStorage.removeItem('history');
+    setRecentHistory([]);
+  }
+
   return (
     <div className='grid grid-cols-5 '>
-      <div className='col-span-1 bg-zinc-800 h-screen'>
-        <ul>
+      <div className='col-span-1 bg-zinc-800 h-screen pt-5'>
+        <h1 className='text-xl text-center text-white flex justify-center'>
+          <spa>Recent History</spa>
+          <button onClick={clearHistory} className='cursor-pointer'><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#FFFFFF"><path d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.57Q720-186 698.85-165T648-144H312Zm336-552H312v480h336v-480ZM384-288h72v-336h-72v336Zm120 0h72v-336h-72v336ZM312-696v480-480Z"/></svg></button>
+        </h1>
+        <ul className='text-left overflow-auto border-zinc-700 text-white ml-1 text-sm text-white m-5'>
           {
             recenthistory && recenthistory.map((item) => (
-              <li key={item} className='p-3 border-b border-zinc-700 text-white'>{item}</li>
+              <li key={item} className='border-b p-1 truncate cursor-pointer hover:bg-zinc-700 hover:text-zinc-200'>{item}</li>
             ))
           }
         </ul>
       </div>
       <div className='col-span-4 p-10 '>
-        <div className='container h-110 overflow-scroll'>
+        <div className='container h-110 overflow-y-auto '>
           <div className=' text-zinc-300 '>
             <ul>
               {
@@ -78,12 +88,11 @@ function App() {
         </div>
         <div className='bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl 
             border border-zinc-700 flex h-16'>
-          <input type='text' value={question} onChange={(event) => setQuestion(event.target.value)} className='w-full h-full p-3 outline-none ' placeholder='Ask me anythig...' />
+          <input type='text' value={question} onChange={(event) => setQuestion(event.target.value)} className='w-full h-full p-3 outline-none ' placeholder='Ask me anything...' />
           <button onClick={askQuestion} >Ask</button>
         </div>
       </div>
     </div>
   )
 }
-
 export default App
