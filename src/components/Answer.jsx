@@ -11,7 +11,7 @@ const [answer,setAnswer]=useState(ans);
         setHeading(true);
         setAnswer(replaceHeadingStarts(ans));
     }
-    console.log(ans, checkHeading(ans));
+    //console.log(ans, checkHeading(ans));
   }, []);
 
   return (
