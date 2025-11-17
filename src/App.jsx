@@ -8,71 +8,71 @@ function App() {
   const [result, setResult] = useState([]);
   const [recenthistory, setRecentHistory] = useState(JSON.parse(localStorage.getItem('history')));
   const [selectedHistory, setSelectedHistory] = useState('');
-  const [loader,setloader]=useState(false);
-  const scrollToAns= useRef('');
-  
-//   let isLoading = false;
+  const [loader, setloader] = useState(false);
+  const scrollToAns = useRef('');
 
-// const askQuestion = async () => {
-//   if (isLoading) return;
-//   isLoading = true;
+  //   let isLoading = false;
 
-//   if(!question && !selectedHistory){
-//       return false;
-//     }
+  // const askQuestion = async () => {
+  //   if (isLoading) return;
+  //   isLoading = true;
 
-//     if(!question && !selectedHistory){
-//       return false;
-//     }
+  //   if(!question && !selectedHistory){
+  //       return false;
+  //     }
 
-//     if(question){
-//       if (localStorage.getItem('history')) {
-//         let history = JSON.parse(localStorage.getItem('history'));
-//         history = [question, ...history];
-//         localStorage.setItem('history', JSON.stringify(history));
-//         setRecentHistory(history);
-//       }
-//       else {
-//         localStorage.setItem('history', JSON.stringify([question]));
-//         setRecentHistory([question]);
-//       }
-//       //console.log(recenthistory)
-//     }
+  //     if(!question && !selectedHistory){
+  //       return false;
+  //     }
 
-//     const payloadData =question ? question:selectedHistory;
-//     const payload = {
-//       "contents": [
-//         {"parts": [{
-//               "text": payloadData
-//             }]
-//         }
-//       ],
-//     }
-    
-//     let response = await fetch(URL, {
-//       method: "POST",
-//       body: JSON.stringify(payload)
-//     })
+  //     if(question){
+  //       if (localStorage.getItem('history')) {
+  //         let history = JSON.parse(localStorage.getItem('history'));
+  //         history = [question, ...history];
+  //         localStorage.setItem('history', JSON.stringify(history));
+  //         setRecentHistory(history);
+  //       }
+  //       else {
+  //         localStorage.setItem('history', JSON.stringify([question]));
+  //         setRecentHistory([question]);
+  //       }
+  //       //console.log(recenthistory)
+  //     }
 
-//     response = await response.json();
-//     let dataString = response.candidates[0].content.parts[0].text;
-//     dataString = dataString.split("* ");
-//     dataString = dataString.map((item) => item.trim());
+  //     const payloadData =question ? question:selectedHistory;
+  //     const payload = {
+  //       "contents": [
+  //         {"parts": [{
+  //               "text": payloadData
+  //             }]
+  //         }
+  //       ],
+  //     }
 
-//     setResult([...result, { type: 'q', text: question ? question:selectedHistory }, { type: 'a', text: dataString }]);
-//     setQuestion("");
-//     setTimeout(() => {
-//       scrollToAns.current.scrollTop=scrollToAns.current.scrollHeight;
-//     }, 500);
+  //     let response = await fetch(URL, {
+  //       method: "POST",
+  //       body: JSON.stringify(payload)
+  //     })
 
-//   isLoading = false;
-// };
+  //     response = await response.json();
+  //     let dataString = response.candidates[0].content.parts[0].text;
+  //     dataString = dataString.split("* ");
+  //     dataString = dataString.map((item) => item.trim());
+
+  //     setResult([...result, { type: 'q', text: question ? question:selectedHistory }, { type: 'a', text: dataString }]);
+  //     setQuestion("");
+  //     setTimeout(() => {
+  //       scrollToAns.current.scrollTop=scrollToAns.current.scrollHeight;
+  //     }, 500);
+
+  //   isLoading = false;
+  // };
   const askQuestion = async () => {
-    if(!question && !selectedHistory){
+    if (!question && !selectedHistory) {
       return false;
     }
 
-    if(question){
+    if (question) {
       if (localStorage.getItem('history')) {
         let history = JSON.parse(localStorage.getItem('history'));
         history = [question, ...history];
@@ -86,12 +86,13 @@ function App() {
       //console.log(recenthistory)
     }
 
-    const payloadData =question ? question:selectedHistory;
+    const payloadData = question ? question : selectedHistory;
     const payload = {
       "contents": [
-        {"parts": [{
-              "text": payloadData
-            }]
+        {
+          "parts": [{
+            "text": payloadData
+          }]
         }
       ],
     }
@@ -106,10 +107,10 @@ function App() {
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
 
-    setResult([...result, { type: 'q', text: question ? question:selectedHistory }, { type: 'a', text: dataString }]);
+    setResult([...result, { type: 'q', text: question ? question : selectedHistory }, { type: 'a', text: dataString }]);
     setQuestion("");
     setTimeout(() => {
-      scrollToAns.current.scrollTop=scrollToAns.current.scrollHeight;
+      scrollToAns.current.scrollTop = scrollToAns.current.scrollHeight;
     }, 500);
     setloader(false);
   }
@@ -120,43 +121,62 @@ function App() {
     }
   }
 
-  
-
-  useEffect(()=>{
+  useEffect(() => {
     askQuestion();
-  },[selectedHistory])
+  }, [selectedHistory])
+
+  // dark mode function can be added here
+
+  // const [darkMode, setDarkMode] = useState('dark');
+  // useEffect(() => {
+  //   console.log(darkMode);
+  //   if (darkMode == 'dark') {
+  //     document.documentElement.classList.add('dark');
+  //   } else {
+  //     document.documentElement.classList.remove('dark');
+  //   }
+
+  // }, [darkMode])
 
   return (
-    <div className='grid grid-cols-5 '>
-      <RecentSearch recenthistory={recenthistory} setSelectedHistory={setSelectedHistory} setRecentHistory={setRecentHistory} />
-      <div className='col-span-4 p-10 '>
-        <h1 className='text-4xl bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-700 text-center'>Hello User, Ask me Anything</h1>        
-           {
-             loader ?
-            <div role="status" className='text-center'>
-              <svg aria-hidden="true" className="inline w-8 h-8 text-neutral-tertiary animate-spin fill-pink-500" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-              </svg>
-              <span className="sr-only">Loading...</span>
-            </div>:null
-           }
-        
-        <div ref ={scrollToAns} className='container h-110 overflow-y-auto bg-zinc-900'>
-          <div className='text-zinc-300 '>
-            <ul>
-              {
-                result.map((item, index) => (
-                  <QuestionAnswer key={index} index={index}  item={item}/>
-                ))
-              }
-            </ul>
+    // <div className={darkMode ? 'dark' : 'light'}>
+    <div >
+      <div className='grid grid-cols-5 h-screen text-center'>
+        {/* <select onChange={(event) => setDarkMode(event.target.value)} className='fixed text-white bottom-0 p-5'>
+          <option value='dark'>Dark</option>
+          <option value='light'>Light</option>
+        </select> */}
+        <RecentSearch recenthistory={recenthistory} setSelectedHistory={setSelectedHistory} setRecentHistory={setRecentHistory} />
+        <div className='col-span-4 p-10'>
+          <h1 className='text-4xl bg-clip-text text-transparent bg-gradient-to-r from-pink-700 to-violet-700 text-center'>Hello User, Ask me Anything</h1>
+          {
+            loader ?
+              <div role="status" className='text-center'>
+                <svg aria-hidden="true" className="inline w-8 h-8 text-neutral-tertiary animate-spin fill-pink-500" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                </svg>
+                {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle fill="#FF156D" stroke="#FF156D" stroke-width="15" r="15" cx="40" cy="65"><animate attributeName="cy" calcMode="spline" dur="2" values="65;135;65;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#FF156D" stroke="#FF156D" stroke-width="15" r="15" cx="100" cy="65"><animate attributeName="cy" calcMode="spline" dur="2" values="65;135;65;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#FF156D" stroke="#FF156D" stroke-width="15" r="15" cx="160" cy="65"><animate attributeName="cy" calcMode="spline" dur="2" values="65;135;65;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg> */}
+                <span className="sr-only">Loading...</span>
+              </div> : null
+          }
+
+          <div ref={scrollToAns} className='container h-110 overflow-y-auto bg-zinc-900'>
+            <div className='text-zinc-300 '>
+              <ul>
+                {
+                  result.map((item, index) => (
+                    <QuestionAnswer key={index} index={index} item={item} />
+                  ))
+                }
+              </ul>
+            </div>
           </div>
-        </div>
-        <div className='bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl 
+          <div className='bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl 
             border border-zinc-700 flex h-16'>
-          <input type='text' onKeyDown={isEnter} value={question} onChange={(event) => setQuestion(event.target.value)} className='w-full h-full p-3 outline-none ' placeholder='Ask me anything...' />
-          <button onClick={askQuestion} >Ask</button>
+            <input type='text' onKeyDown={isEnter} value={question} onChange={(event) => setQuestion(event.target.value)} className='w-full h-full p-3 outline-none ' placeholder='Ask me anything...' />
+            <button onClick={askQuestion} >Ask</button>
+          </div>
         </div>
       </div>
     </div>
