@@ -11,62 +11,6 @@ function App() {
   const [loader, setloader] = useState(false);
   const scrollToAns = useRef('');
 
-  //   let isLoading = false;
-
-  // const askQuestion = async () => {
-  //   if (isLoading) return;
-  //   isLoading = true;
-
-  //   if(!question && !selectedHistory){
-  //       return false;
-  //     }
-
-  //     if(!question && !selectedHistory){
-  //       return false;
-  //     }
-
-  //     if(question){
-  //       if (localStorage.getItem('history')) {
-  //         let history = JSON.parse(localStorage.getItem('history'));
-  //         history = [question, ...history];
-  //         localStorage.setItem('history', JSON.stringify(history));
-  //         setRecentHistory(history);
-  //       }
-  //       else {
-  //         localStorage.setItem('history', JSON.stringify([question]));
-  //         setRecentHistory([question]);
-  //       }
-  //       //console.log(recenthistory)
-  //     }
-
-  //     const payloadData =question ? question:selectedHistory;
-  //     const payload = {
-  //       "contents": [
-  //         {"parts": [{
-  //               "text": payloadData
-  //             }]
-  //         }
-  //       ],
-  //     }
-
-  //     let response = await fetch(URL, {
-  //       method: "POST",
-  //       body: JSON.stringify(payload)
-  //     })
-
-  //     response = await response.json();
-  //     let dataString = response.candidates[0].content.parts[0].text;
-  //     dataString = dataString.split("* ");
-  //     dataString = dataString.map((item) => item.trim());
-
-  //     setResult([...result, { type: 'q', text: question ? question:selectedHistory }, { type: 'a', text: dataString }]);
-  //     setQuestion("");
-  //     setTimeout(() => {
-  //       scrollToAns.current.scrollTop=scrollToAns.current.scrollHeight;
-  //     }, 500);
-
-  //   isLoading = false;
-  // };
   const askQuestion = async () => {
     if (!question && !selectedHistory) {
       return false;
