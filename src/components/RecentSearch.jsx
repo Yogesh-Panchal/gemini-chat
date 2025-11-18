@@ -14,8 +14,8 @@ function RecentSearch({recenthistory,setRecentHistory,setSelectedHistory}) {
             </h1>
             <ul className='text-left overflow-auto border-zinc-700 text-white ml-1 text-sm text-white m-5'>
             {
-                recenthistory && recenthistory.map((item) => (
-                <li  onClick={()=>setSelectedHistory(item)} key={item} className='border-b p-1 truncate cursor-pointer hover:bg-zinc-700 hover:text-zinc-200'>{item}</li>
+                recenthistory && recenthistory.map((item,index) => (
+                <li  onClick={()=>setSelectedHistory(item)} key={`${item}-${index}`} className='border-b p-1 truncate cursor-pointer hover:bg-zinc-700 hover:text-zinc-200'>{item}</li>
                 ))
             }
             </ul>
